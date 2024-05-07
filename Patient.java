@@ -34,8 +34,8 @@ public class Patient {
     this.patientAddress = patientAddress;
   }
 
-  public void printPatientDetails() {
-    System.out.println(
+  public String printPatientDetails() {
+    return (
       "Patient ID: " +
       patientId +
       "\nPatient Name: " +
