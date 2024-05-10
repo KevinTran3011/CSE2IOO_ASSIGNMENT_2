@@ -1,26 +1,16 @@
-public class MeasurementObservationType extends ObservationType {
+class MeasurementObservationType extends ObservationType {
+  private String unit;
 
-  private String unitString;
-
-  public MeasurementObservationType(
-    String typeId,
-    String typeName,
-    String typeDescription,
-    String unitString
-  ) {
-    super(typeId, typeName, typeDescription);
-    this.unitString = unitString;
+  public MeasurementObservationType(String code, String name, String unit) {
+      super(code, name);
+      this.unit = unit;
   }
 
-  public String getUnitString() {
-    return unitString;
-  }
-
-  public void setUnitString(String unitString) {
-    this.unitString = unitString;
+  public String getUnit() {
+      return unit;
   }
 
   public String toString() {
-    return (super.toString() + "\nUnit String: " + unitString);
+      return "MeasurementObservationType[code: " + getCode() + ", name: " + getName() + ", unit: " + unit + "]";
   }
 }

@@ -1,32 +1,34 @@
-import java.util.List;
+class CategoryObservationType extends ObservationType {
+  private String[] categories;
 
-public class CategoryObservationType extends ObservationType {
-
-  private List<String> categories;
-
-  public CategoryObservationType(
-    String typeId,
-    String typeName,
-    String typeDescription,
-    List<String> categories
-  ) {
-    super(typeId, typeName, typeDescription);
-    this.categories = categories;
+  public CategoryObservationType(String code, String name, String[] categories) {
+      super(code, name);
+      this.categories = categories;
   }
 
-  public List<String> getCategories() {
-    return categories;
-  }
-
-  public void setCategories(List<String> categories) {
-    this.categories = categories;
+  public String[] getCategories() {
+      return categories;
   }
 
   public boolean isValidCategory(String category) {
-    return categories.contains(category);
+      for (String c : categories) {
+          if (c.equals(category)) {
+              return true;
+          }
+      }
+      return false;
   }
 
   public String toString() {
-    return (super.toString() + "\nCategories: " + categories);
+      StringBuilder sb = new StringBuilder();
+      sb.append("CategoryObservationType[code: " + getCode() + ", name: " + getName() + ", categories: |");
+      for (int i = 0; i < categories.length; i++) {
+          sb.append(categories[i]);
+          if (i < categories.length - 1) {
+              sb.append("|");
+          }
+      }
+      sb.append("|]");
+      return sb.toString();
   }
 }

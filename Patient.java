@@ -1,47 +1,56 @@
-public class Patient {
+import  java.util.*;
 
-  private String patientId;
-  private String patientName;
-  private String patientAddress;
+class Patient {
+  private String id;
+  private String name;
+  private ArrayList<Observation> observations;
 
-  public Patient(String patientId, String patientName, String patientAddress) {
-    this.patientId = patientId;
-    this.patientName = patientName;
-    this.patientAddress = patientAddress;
+  public Patient(String id, String name) {
+      this.id = id;
+      this.name = name;
+      observations = new ArrayList<>();
   }
 
-  public String getPatientId() {
-    return patientId;
+  public String getId() {
+      return id;
   }
 
-  public void setPatientId(String patientId) {
-    this.patientId = patientId;
+  public String getName() {
+      return name;
   }
 
-  public String getPatientName() {
-    return patientName;
+  public ArrayList<Observation> getObservations() {
+      return observations;
   }
 
-  public void setPatientName(String patientName) {
-    this.patientName = patientName;
+  public void addObservation(Observation observation) {
+      observations.add(observation);
   }
 
-  public String getPatientAddress() {
-    return patientAddress;
+  public boolean hasMeasurementObservation(MeasurementObservationType type) {
+      for (Observation observation : observations) {
+          if (observation instanceof MeasurementObservation && observation.getObservationType() == type) {
+              return true;
+          }
+      }
+      return false;
   }
 
-  public void setPatientAddress(String patientAddress) {
-    this.patientAddress = patientAddress;
+  public boolean hasCategoryObservation(CategoryObservationType type) {
+      for (Observation observation : observations) {
+          if (observation instanceof CategoryObservation && observation.getObservationType() == type) {
+              return true;
+          }
+      }
+      return false;
   }
 
-  public String printPatientDetails() {
-    return (
-      "Patient ID: " +
-      patientId +
-      "\nPatient Name: " +
-      patientName +
-      "\nPatient Address: " +
-      patientAddress
-    );
+  public String toString() {
+      StringBuilder sb = new StringBuilder();
+      sb.append("Patient id: " + id + ", name: " + name + "\nObservations:\n");
+      for (Observation observation : observations) {
+          sb.append("- " + observation + "\n");
+      }
+      return sb.toString();
   }
 }
