@@ -1,9 +1,14 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 class PatientRecordSystem {
 
-  private HashMap<String, ObservationType> observationTypes;
-  private HashMap<String, Patient> patients;
+  protected HashMap<String, ObservationType> observationTypes;
+  protected HashMap<String, Patient> patients;
 
   public PatientRecordSystem() {
     observationTypes = new HashMap<>();
@@ -22,6 +27,14 @@ class PatientRecordSystem {
     }
     ObservationType type = new MeasurementObservationType(code, name, unit);
     observationTypes.put(code, type);
+  }
+
+  public HashMap<String, ObservationType> getObservationTypes() {
+    return observationTypes;
+  }
+
+  public HashMap<String, Patient> getPatients() {
+    return patients;
   }
 
   public void addCategoryObservationType(
@@ -109,6 +122,169 @@ class PatientRecordSystem {
     }
     CategoryObservation observation = new CategoryObservation(type, value);
     patient.addObservation(observation);
+  }
+
+  public void saveData() throws IOException {
+    saveMeasurementObservationTypes("PRS-MeasurementObservationTypes.txt");
+    saveCategoryObservationTypes("PRS-CategoryObservationTypes.txt");
+    savePatients("PRS-Patients.txt");
+    saveMeasurementObservations("PRS-MeasurementObservations.txt");
+    saveCategoryObservations("PRS-CategoryObservations.txt");
+  }
+
+  private void saveMeasurementObservationTypes(String fileName)
+    throws IOException {
+    try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+      for (ObservationType type : observationTypes.values()) {
+        if (type instanceof MeasurementObservationType) {
+          MeasurementObservationType measurementType = (MeasurementObservationType) type;
+          writer.println(
+            measurementType.getCode() +
+            "; " +
+            measurementType.getName() +
+            "; " +
+            measurementType.getUnit()
+          );
+        }
+      }
+    }
+  }
+
+  private void saveCategoryObservationTypes(String fileName)
+    throws IOException {
+    try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+      for (ObservationType type : observationTypes.values()) {
+        if (type instanceof CategoryObservationType) {
+          CategoryObservationType categoryType = (CategoryObservationType) type;
+          StringBuilder categories = new StringBuilder();
+          for (String category : categoryType.getCategories()) {
+            categories.append(category).append(", ");
+          }
+          String categoriesStr = categories.substring(
+            0,
+            categories.length() - 2
+          );
+          writer.println(
+            categoryType.getCode() +
+            "; " +
+            categoryType.getName() +
+            "; " +
+            categoriesStr
+          );
+        }
+      }
+    }
+  }
+
+  private void savePatients(String fileName) throws IOException {
+    try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+      for (Patient patient : patients.values()) {
+        writer.println(patient.getId() + "; " + patient.getName());
+      }
+    }
+  }
+
+  private void saveMeasurementObservations(String fileName) throws IOException {
+    try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+      for (Patient patient : patients.values()) {
+        for (Observation observation : patient.getObservations().values()) {
+          if (observation instanceof MeasurementObservation) {
+            MeasurementObservation measurement = (MeasurementObservation) observation;
+            writer.println(
+              patient.getId() +
+              "; " +
+              measurement.getObservationType().getCode() +
+              "; " +
+              measurement.getValue()
+            );
+          }
+        }
+      }
+    }
+  }
+
+  private void saveCategoryObservations(String fileName) throws IOException {
+    try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
+      for (Patient patient : patients.values()) {
+        for (Observation observation : patient.getObservations().values()) {
+          if (observation instanceof CategoryObservation) {
+            CategoryObservation category = (CategoryObservation) observation;
+            writer.println(
+              patient.getId() +
+              "; " +
+              category.getObservationType().getCode() +
+              "; " +
+              category.getValue()
+            );
+          }
+        }
+      }
+    }
+  }
+
+  public void loadData() throws IOException {
+    loadMeasurementObservationTypes("PRS-MeasurementObservationTypes.txt");
+    loadCategoryObservationTypes("PRS-CategoryObservationTypes.txt");
+    loadPatients("PRS-Patients.txt");
+    loadMeasurementObservations("PRS-MeasurementObservations.txt");
+    loadCategoryObservations("PRS-CategoryObservations.txt");
+  }
+
+  private void loadMeasurementObservationTypes(String fileName)
+    throws IOException {
+    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        String[] parts = line.split("; ");
+        addMeasurementObservationType(parts[0], parts[1], parts[2]);
+      }
+    }
+  }
+
+  private void loadCategoryObservationTypes(String fileName)
+    throws IOException {
+    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        String[] parts = line.split("; ");
+        String[] categories = parts[2].split(", ");
+        addCategoryObservationType(parts[0], parts[1], categories);
+      }
+    }
+  }
+
+  private void loadPatients(String fileName) throws IOException {
+    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        String[] parts = line.split("; ");
+        addPatient(parts[0], parts[1]);
+      }
+    }
+  }
+
+  private void loadMeasurementObservations(String fileName) throws IOException {
+    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        String[] parts = line.split("; ");
+        addMeasurementObservation(
+          parts[0],
+          parts[1],
+          Double.parseDouble(parts[2])
+        );
+      }
+    }
+  }
+
+  private void loadCategoryObservations(String fileName) throws IOException {
+    try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+      String line;
+      while ((line = reader.readLine()) != null) {
+        String[] parts = line.split("; ");
+        addCategoryObservation(parts[0], parts[1], parts[2]);
+      }
+    }
   }
 
   public String toString() {
