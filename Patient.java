@@ -1,56 +1,47 @@
-import  java.util.*;
+import java.util.*;
 
 class Patient {
+
   private String id;
   private String name;
-  private ArrayList<Observation> observations;
+  private HashMap<ObservationType, Observation> observations;
 
   public Patient(String id, String name) {
-      this.id = id;
-      this.name = name;
-      observations = new ArrayList<>();
+    this.id = id;
+    this.name = name;
+    observations = new HashMap<>();
   }
 
   public String getId() {
-      return id;
+    return id;
   }
 
   public String getName() {
-      return name;
+    return name;
   }
 
-  public ArrayList<Observation> getObservations() {
-      return observations;
+  public HashMap<ObservationType, Observation> getObservations() {
+    return observations;
   }
 
   public void addObservation(Observation observation) {
-      observations.add(observation);
+    observations.put(observation.getObservationType(), observation);
   }
 
   public boolean hasMeasurementObservation(MeasurementObservationType type) {
-      for (Observation observation : observations) {
-          if (observation instanceof MeasurementObservation && observation.getObservationType() == type) {
-              return true;
-          }
-      }
-      return false;
+    return observations.containsKey(type);
   }
 
   public boolean hasCategoryObservation(CategoryObservationType type) {
-      for (Observation observation : observations) {
-          if (observation instanceof CategoryObservation && observation.getObservationType() == type) {
-              return true;
-          }
-      }
-      return false;
+    return observations.containsKey(type);
   }
 
   public String toString() {
-      StringBuilder sb = new StringBuilder();
-      sb.append("Patient id: " + id + ", name: " + name + "\nObservations:\n");
-      for (Observation observation : observations) {
-          sb.append("- " + observation + "\n");
-      }
-      return sb.toString();
+    StringBuilder sb = new StringBuilder();
+    sb.append("Patient id: " + id + ", name: " + name + "\nObservations:\n");
+    for (Observation observation : observations.values()) {
+      sb.append("- " + observation + "\n");
+    }
+    return sb.toString();
   }
 }
