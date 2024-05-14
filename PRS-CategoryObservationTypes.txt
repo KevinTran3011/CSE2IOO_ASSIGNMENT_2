@@ -1,0 +1,1 @@
+BT; blood type; O, A, AB, B

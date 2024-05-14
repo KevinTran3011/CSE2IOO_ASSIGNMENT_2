@@ -3,18 +3,16 @@ import java.util.*;
 
 public class PatientRecordSystemMenu {
 
-  private Scanner scanner;
-  private PatientRecordSystem patientRecordSystem;
+  protected Scanner scanner;
+  protected PatientRecordSystem patientRecordSystem;
 
   public PatientRecordSystemMenu() {
     scanner = new Scanner(System.in);
     patientRecordSystem = new PatientRecordSystem();
   }
 
-  private void displayMenu() {
-    System.out.println("=====================");
+  protected void displayMenu() {
     System.out.println("Patient Record System");
-    System.out.println("=====================");
     System.out.println("1. Add a measurement observation type");
     System.out.println("2. Add a category observation type");
     System.out.println("3. Add a patient");
