@@ -1,4 +1,4 @@
-abstract class ObservationType {
+public abstract class ObservationType {
 
   private String code;
   private String name;

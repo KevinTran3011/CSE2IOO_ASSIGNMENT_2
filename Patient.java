@@ -1,6 +1,6 @@
 import java.util.*;
 
-class Patient {
+public class Patient {
 
   private String id;
   private String name;

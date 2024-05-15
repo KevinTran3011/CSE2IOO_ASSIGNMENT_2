@@ -1,4 +1,4 @@
-class CategoryObservationType extends ObservationType {
+public class CategoryObservationType extends ObservationType {
 
   private String[] categories;
 

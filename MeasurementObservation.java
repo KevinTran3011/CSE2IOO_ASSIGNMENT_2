@@ -1,4 +1,4 @@
-class MeasurementObservation extends Observation {
+public class MeasurementObservation extends Observation {
 
   private double value;
 

@@ -1,4 +1,4 @@
-class CategoryObservation extends Observation {
+public class CategoryObservation extends Observation {
 
   private String value;
 

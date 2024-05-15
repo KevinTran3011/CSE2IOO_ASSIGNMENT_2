@@ -1,4 +1,4 @@
-class MeasurementObservationType extends ObservationType {
+public class MeasurementObservationType extends ObservationType {
 
   private String unit;
 

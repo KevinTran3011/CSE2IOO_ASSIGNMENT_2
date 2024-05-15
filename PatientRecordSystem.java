@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
-class PatientRecordSystem {
+public class PatientRecordSystem {
 
   protected HashMap<String, ObservationType> observationTypes;
   protected HashMap<String, Patient> patients;

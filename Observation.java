@@ -1,4 +1,4 @@
-abstract class Observation {
+public abstract class Observation {
 
   private ObservationType observationType;
 
